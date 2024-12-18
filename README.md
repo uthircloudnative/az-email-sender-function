@@ -1,4 +1,5 @@
 This repostiry contains a use case code and steps to create Azure function app using spring cloud function.
+When this function is invoked it will send an email to given recipient.
 
 # Use Case
 
@@ -58,3 +59,179 @@ This repostiry contains a use case code and steps to create Azure function app u
 
   - Now we are all set to use this SMTP server to send emails. As this is free account it has some limitation. Please be aware of those limits before sending emails.
 
+
+## Azure Function code implementation.
+
+  - Azure function is a serverless offering from Azure. Where developers don't need to worry about provisioning or maintaining of compute platform in which code is running.
+    
+  - We should only develop business logic which needs to be executed underlying platform to run this business logic will be provided and managed by Azure.
+    
+  - This business logic will be developed in the form of light weight function's and it can be executed by the azure platform.
+    
+  - These light weight functions will be developed using simple core Java itself depending on the nature of its use case. In our case we will be leveraging Spring framework to create this function. With Spring we can get the benefit of other framework features.
+
+  - To create a function Spring will provide a library Spring Cloud Funtion which will have a custom integration for Azure Cloud Function. In a nutshell we will create a small spring boot application without other heavy weight framework features like MVC or WebFlxu but still use its powerful IoC features to implement our function business logic.
+
+ - In spring initializr create a simple spring boot application with Spring Cloud Function dependency and include below given dependencies.
+
+  ```
+  <dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+	<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-function-context</artifactId>
+		</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-function-adapter-azure</artifactId>
+			</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+  ```
+
+  - From this **spring-boot-starter-mail** will provide wrapper library to send email.
+    
+  - **spring-cloud-function-context** will provide a lightweight library to create functions which can be executed on different platforms.
+
+  - **spring-cloud-function-adapter-azure** will provide intergation of Spring Cloud Function to Azure platform. When code is run on Azure this adapter will intercept the requests and bind the input to function objects then execute the function and send the response back to caller. It will provide hadnler implememtion to handle incoming request.
+
+  - Once function code is implemented to deploy and run this function on Azure function app we need to configure following Azure plugin which will bind the code into the azure platform and run. In the configuration section should have exact value of Azure function app.
+
+  ```
+     
+				<groupId>com.microsoft.azure</groupId>
+				<artifactId>azure-functions-maven-plugin</artifactId>
+				<version>${azure.functions.maven.plugin.version}</version>
+
+				<configuration>
+					<appName>${functionAppName}</appName>
+					<resourceGroup>${functionResourceGroup}</resourceGroup>
+					<region>${functionAppRegion}</region>
+					<appServicePlanName>${functionAppServicePlanName}</appServicePlanName>
+					<pricingTier>${functionPricingTier}</pricingTier>
+
+					<hostJson>${project.basedir}/src/main/resources/host.json</hostJson>
+				<!--	<localSettingsJson>${project.basedir}/src/main/resources/local.settings.json</localSettingsJson> -->
+
+					<runtime>
+						<os>linux</os>
+						<javaVersion>17</javaVersion>
+					</runtime>
+
+					<funcPort>7072</funcPort>
+
+					<appSettings>
+						<property>
+							<name>FUNCTIONS_EXTENSION_VERSION</name>
+							<value>~4</value>
+						</property>
+					<!--	<property>
+							<name>MAIN_CLASS</name>
+							<value>com.azlearning.functionapp.AzEmailSenderFunctionApplication</value>
+						</property> -->
+					</appSettings>
+				</configuration>
+				<executions>
+					<execution>
+						<id>package-functions</id>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+  ``` 
+
+  - Define a Azure function Halder which handles incoming request. To do that define a Component like below.
+
+  ```
+@Component
+public class EmailSenderFunctionHandler {
+
+    private final EmailSender emailSender;
+
+    public EmailSenderFunctionHandler(EmailSender emailSender) {
+        this.emailSender = emailSender;
+    }
+
+    @FunctionName("emailSender")
+    public String execute(
+            @HttpTrigger(name = "req", methods = {
+                    HttpMethod.POST }, authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<EmailDTO>> request,
+            ExecutionContext context) {
+
+        context.getLogger().info("Java HTTP trigger processed a request.");
+
+        EmailDTO emailDTO = request.getBody().orElseThrow(() -> new IllegalArgumentException("EmailDTO is required"));
+
+        return emailSender.apply(emailDTO);
+
+    }
+}
+  ```
+  - **EmailSenderFunctionHandler** is a entry point to function it is defined as simple spring bean using @Component.
+
+  - **@FunctionName("emailSender")** annotation will indicate the name of the function on the azure.
+ 
+  - **@HttpTrigger** will hanle HTTP specific request and it's supported methods which this function can handle. In our case this function will support POST method.
+
+  - **HttpRequestMessage<Optional<EmailDTO>> request** will wrap the Request body which will be parsed by azure function adpter library.
+
+  - **ExecutionContext context** will provide azure runtime platform access. Specifically to get platform logging context which is used to capture application logs and forward it to azure other services.
+
+  - Once request is intercepted by this adapter then it will invoke remainder of the application logic as like any other spring java application.
+
+  - In our use case we need to send email to do that we need to configure SMTP server details we created and captured in earlier steps above.
+
+  - Below code will have mailtrap SMTP server details configured in our application code. These configuration will be read by the function during runtime and it will connect to SMTP server to send email.
+
+   ```
+     spring.application.name=az-email-sender-function
+    
+    spring.mail.host=live.smtp.mailtrap.io
+    spring.mail.port=587
+    spring.mail.username=smtp@mailtrap.io
+    spring.mail.password=<Password>
+    spring.mail.properties.mail.smtp.auth=true
+    spring.mail.properties.mail.smtp.starttls.enable=true
+
+  ```
+
+   - **EmailSender** will implement **Function** interface and have logic to call the SMTP server with provided email details.
+
+   - Under **resources** folder we need to include **host.json** with provided content as defined by azure to make the integration work.
+
+### Run function locally and test
+
+ - To run and test the azure functions locally we need to install Azure Core Tools which let us test our function locally without need to deploy in cloud.
+
+ - Execute below commands to install this tool in macOS
+
+  ```
+    brew tap azure/functions
+    brew install azure-functions-core-tools@4
+
+  ```
+
+### Create Azure funtion app in azure portal
+
+   - Now our function code is ready we need to create a function app in Azure which will run this code.
+
+   - 
