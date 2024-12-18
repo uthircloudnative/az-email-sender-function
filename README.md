@@ -240,7 +240,49 @@ public class EmailSenderFunctionHandler {
 
    ![Azure-IntelliJ](https://github.com/user-attachments/assets/28a5dc63-6bb0-4a16-bd78-249491372088)
 
-   
+   - Now build the application using below command. Make sure to run this command from application root folder.
+
+   ```
+      ./mvnw clean package
+
+   ```
+
+   - Once build is successful run the function locally using below command.
+
+   ```
+    ./mvnw azure-functions:run -DenableDebug
+
+   ```
+
+   - Upon execution of above command our function will start in locally and we should be able to see below logs.
+
+   ![Function-start-local](https://github.com/user-attachments/assets/6e676291-0fe0-4742-87e3-84080399ab82)
+
+   - To test the application create POST request body which should contains from, to, subject, body of email.
+     
+   - Sample request body for this function.
+     
+   ```
+     {
+  	"from" : "hello@demomailtrap.com",  // Make sure this value must match with our mailtrap account integration.
+  	"to" : "valid@gmail.com",
+  	"subject" : "Az Learning Test Email",
+  	"body" : "Email Service test email 1"
+      }
+
+   ```
+   - Navigate to application root folder and execute below curl command to call the function.
+
+  ```
+    curl -X POST "http://localhost:7072/api/emailSender" \
+     -H "Content-Type: application/json" \
+     -d '{"from":"hello@demomailtrap.com","to":"<Useremailidusertocreatedomaintrapacct>@gmail.com","subject":"Az Learning Test Email","body":"This email is triggered by Azure Function"}'
+ 
+  ```
+
+   - If everything work as expected an email will be triggered and should be available in the email ID specified in the **to** address of curl.
+
+   - Next lets promote this function to Azure and run the function in Azure.
 
 ### Create Azure funtion app in azure portal
 
