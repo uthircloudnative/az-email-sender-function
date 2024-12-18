@@ -230,6 +230,18 @@ public class EmailSenderFunctionHandler {
 
   ```
 
+   - To run and deploy azure function from IntelliJ IDE install **Azure ToolKit for IntelliJ**
+
+   ![Install-Azure-ToolKit](https://github.com/user-attachments/assets/77cbe69f-2a26-4ef4-9d48-ce5fc7c5de66)
+
+   - After this intsallation and restart we need to authenticate IntelliJ to connect our Azure account.
+
+   - Once its authenticated we can able to see Azure connectivity window and different Azure service listing in IntelliJ IDE.
+
+   ![Azure-IntelliJ](https://github.com/user-attachments/assets/28a5dc63-6bb0-4a16-bd78-249491372088)
+
+   
+
 ### Create Azure funtion app in azure portal
 
    - Now our function code is ready we need to create a function app in Azure which will run this code.
