@@ -288,4 +288,37 @@ public class EmailSenderFunctionHandler {
 
    - Now our function code is ready we need to create a function app in Azure which will run this code.
 
-   - 
+   - First lets create a azure function app from Azure portal
+
+   ![Create-Azure-Fun](https://github.com/user-attachments/assets/1f79a482-69c7-42a8-b032-3ec92a9a0b8a)
+
+
+   ![Function-Template](https://github.com/user-attachments/assets/2dae2b4d-10ee-4ca0-ba55-37058cb8b18b)
+
+   ![Choose-plan](https://github.com/user-attachments/assets/711293ed-19f9-418a-95e7-33647c6fdf3b)
+
+   ![Define-ResGrp-Region](https://github.com/user-attachments/assets/074e8d40-9b68-4579-89de-02448a2a51c9)
+
+   ![DefaultStorage-acct](https://github.com/user-attachments/assets/6b679151-92d7-48a0-a0dd-126d45a98bee)
+
+   ![Review-Create](https://github.com/user-attachments/assets/9e08de82-36d3-4bf0-ac96-9d4d32327622)
+
+   ![Deploy-Complete](https://github.com/user-attachments/assets/d7896d1d-0640-41e6-89da-5a3f1a5a3ba8)
+
+   ![Confirm-Config](https://github.com/user-attachments/assets/415ab801-6329-4cbd-a5e9-52e1e0cf543f)
+
+   ![Deploy-Function-IDE](https://github.com/user-attachments/assets/f02a99c8-2c05-42ef-813e-8cc6eb689a3f)
+
+   ![Deploy-Fun](https://github.com/user-attachments/assets/7d414fbe-7824-4d2a-9192-e64febffa3c9)
+
+   ![Refresh-app-setting](https://github.com/user-attachments/assets/1a0934ac-cc97-40bd-b40a-ce5f4e52089c)
+
+   ![Deploy-Success](https://github.com/user-attachments/assets/fd122152-c9b5-4ab1-897c-d18a1b3555d1)
+
+   ![Function-Display](https://github.com/user-attachments/assets/ff74c413-e41a-4eee-9780-7ced34fdc79b)
+
+   ![MAIN_CLASS](https://github.com/user-attachments/assets/3e007096-c443-4f25-a286-e9a5cd18df8f)
+
+   ![Test-Runt](https://github.com/user-attachments/assets/9a432443-c60c-402c-b082-8bbf981f5520)
+
+   ![Success](https://github.com/user-attachments/assets/a6589207-47a9-488b-aaab-b565b753d15e)
