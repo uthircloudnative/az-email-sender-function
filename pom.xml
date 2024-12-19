@@ -39,7 +39,7 @@
 		<functionAppName>email-sender-funapp</functionAppName>
 		<functionAppRegion>Central US</functionAppRegion>
 		<functionResourceGroup>az-cert-resource-group</functionResourceGroup>
-		<functionAppServicePlanName>ASP-azcertresourcegroup-aa2b (Y1: 0)</functionAppServicePlanName>
+		<functionAppServicePlanName>ASP-azcertresourcegroup-bb80 (Y1: 0)</functionAppServicePlanName>
 		<functionPricingTier>Y1</functionPricingTier>
 		<spring-cloud.version>2024.0.0</spring-cloud.version>
 	</properties>

@@ -32,7 +32,7 @@ public class EmailSenderFunctionHandler {
                     HttpMethod.POST }, authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<EmailDTO>> request,
             ExecutionContext context) {
 
-        context.getLogger().info("Java HTTP trigger processed a request.");
+        context.getLogger().info("emailSender function is invoked");
 
         context.getLogger().info("Headers : " + request.getHeaders());
         context.getLogger().info("URL : " + request.getUri());
@@ -45,6 +45,8 @@ public class EmailSenderFunctionHandler {
         context.getLogger().info("Subject : " + emailDTO.getSubject());
         context.getLogger().info("Body : " + emailDTO.getBody());
 
+        String status = emailSender.apply(emailDTO);
+        context.getLogger().info("emailSender function is completed "+status);
         return emailSender.apply(emailDTO);
 
     }

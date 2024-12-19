@@ -50,6 +50,6 @@ public class EmailSender implements Function<EmailDTO,String> {
             return "Unexpected exception occurred when sending email" + exp.getMessage();
         }
         logger.info("Email is delivered Successfully");
-        return "Email is delivered Successfully";
+        return "SUCCESS";
     }
 }
