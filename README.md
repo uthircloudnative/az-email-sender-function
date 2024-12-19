@@ -292,32 +292,73 @@ public class EmailSenderFunctionHandler {
 
    ![Create-Azure-Fun](https://github.com/user-attachments/assets/1f79a482-69c7-42a8-b032-3ec92a9a0b8a)
 
-
+   - It will create a template empty function app page.
+     
    ![Function-Template](https://github.com/user-attachments/assets/2dae2b4d-10ee-4ca0-ba55-37058cb8b18b)
 
+   - Choose a plan which suits for specific use case. For our use case we will choose basic consumption plan.
+     
    ![Choose-plan](https://github.com/user-attachments/assets/711293ed-19f9-418a-95e7-33647c6fdf3b)
+
+   - Make sure create/select a Resource Group, Region, funAppName  which exactly match what is configured in pom.xml
 
    ![Define-ResGrp-Region](https://github.com/user-attachments/assets/074e8d40-9b68-4579-89de-02448a2a51c9)
 
+   - Choose all other options as default values
+     
    ![DefaultStorage-acct](https://github.com/user-attachments/assets/6b679151-92d7-48a0-a0dd-126d45a98bee)
+
+   - Review the selection and click Create.
 
    ![Review-Create](https://github.com/user-attachments/assets/9e08de82-36d3-4bf0-ac96-9d4d32327622)
 
+   - It will Create function app and deploy. Once deployment is complete we can see the function app got created.
+
    ![Deploy-Complete](https://github.com/user-attachments/assets/d7896d1d-0640-41e6-89da-5a3f1a5a3ba8)
+
+   - Once its created make sure all the configurations are correct.
 
    ![Confirm-Config](https://github.com/user-attachments/assets/415ab801-6329-4cbd-a5e9-52e1e0cf543f)
 
+   - Now publish our local code to this app from IDE.
+
+   - Before pushing code make sure IDE is connected to Azure subscriprion if not login again and refresh Azure explorer.
+
+   - This will refersh all the resources.
+
+   - Clean and repackage the code once if its not done already.
+
    ![Deploy-Function-IDE](https://github.com/user-attachments/assets/f02a99c8-2c05-42ef-813e-8cc6eb689a3f)
+
+   - Then go to project root and right click choose Azure -> Deploy Azure Function
 
    ![Deploy-Fun](https://github.com/user-attachments/assets/7d414fbe-7824-4d2a-9192-e64febffa3c9)
 
+   - In the App Setting window if values are prepopulated delete them once and refresh the Azure explorer once again.
+
+   - This will pull latest config values or app settings into IDE which is latest config values.
+
+   - Now click Deploy Run it will push the code to Azure.
+
    ![Refresh-app-setting](https://github.com/user-attachments/assets/1a0934ac-cc97-40bd-b40a-ce5f4e52089c)
+
+   - Once deployment is success we can able to see the success message.
 
    ![Deploy-Success](https://github.com/user-attachments/assets/fd122152-c9b5-4ab1-897c-d18a1b3555d1)
 
    ![Function-Display](https://github.com/user-attachments/assets/ff74c413-e41a-4eee-9780-7ced34fdc79b)
 
+   - Post deploy go to Function App and see the Environment Variables.
+
+   - Make sire MAIN_CLASS variable is populated with correct application main class value. If not create a new variable MAIN_CLASS with main class value.
+
+   - When function is getting invoked Azure will look for this variable and identify the main class and start the function.
+
    ![MAIN_CLASS](https://github.com/user-attachments/assets/3e007096-c443-4f25-a286-e9a5cd18df8f)
+
+   - Now its time to test the function. Click Test/Run and provide valid POST body request.
+
+   - If everything works as expected function will get invoker upon trigger of HTTP request and email will be sent successfully.
 
    ![Test-Runt](https://github.com/user-attachments/assets/9a432443-c60c-402c-b082-8bbf981f5520)
 
